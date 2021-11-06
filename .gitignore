@@ -1,13 +1,1 @@
-/.idea/
-/src/
 /target/
-/target/classes/
-/target/generated-sources/
-/target/maven-archiver/
-/target/maven-status/
-!/target/MusicBot-1.1.jar
-/target/original-MusicBot-1.1.jar
-/dependency-reduced-pom.xml
-/info.txt
-/pom.xml
-/Procfile
