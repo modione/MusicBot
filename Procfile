@@ -1,0 +1,1 @@
+worker: java -jar target/MusicBot-1.1.jar
