@@ -1,9 +1,6 @@
 package commands.logic;
 
-import commands.cmds.ModiMenuCommand;
-import commands.cmds.PauseSong;
-import commands.cmds.PlaySong;
-import commands.cmds.SkipSong;
+import commands.cmds.*;
 import logic.main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -29,11 +26,13 @@ public class CommandManager extends ListenerAdapter {
         PlaySong play = new PlaySong();
         SkipSong skip = new SkipSong();
         PauseSong song = new PauseSong();
+        Rejoin rejoin = new Rejoin();
         commands.add(play);
         commands.add(skip);
         commands.add(song);
         commands.add(modiMenu);
-        commandList.addCommands(play.data(), skip.data(), song.data(), modiMenu.data()).queue();
+        commands.add(rejoin);
+        commandList.addCommands(play.data(), skip.data(), song.data(), modiMenu.data(), rejoin.data()).queue();
         commandList.queue();
         for (Guild guild : main.INSTANCE.jda.getGuilds()) {
             Map<String, Collection<? extends CommandPrivilege>> pre = new HashMap<>();

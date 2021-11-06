@@ -53,16 +53,18 @@ public class ModiMenuCommand extends ListenerAdapter implements ICommand {
     }
 
     public void onButtonClick(@NotNull ButtonClickEvent event) {
-        String[] split = Objects.requireNonNull(Objects.requireNonNull(event.getButton()).getId()).split(":");
-        if (split[1].equals("add_mod")) {
-            Role modirole = this.getModiRole(event.getGuild());
-            Objects.requireNonNull(event.getGuild()).addRoleToMember(Objects.requireNonNull(event.getMember()), modirole).queue();
-            event.editButton(ModiMenuCommand.remove_administrator).queue();
-        } else if (split[1].equals("rem_mod")) {
-            Role modirole = this.getModiRole(event.getGuild());
-            Objects.requireNonNull(event.getGuild()).removeRoleFromMember(Objects.requireNonNull(event.getMember()), modirole).queue();
-            event.editButton(ModiMenuCommand.add_administrator).queue();
-        }
+        try {
+            String[] split = Objects.requireNonNull(Objects.requireNonNull(event.getButton()).getId()).split(":");
+            if (split[1].equals("add_mod")) {
+                Role modirole = this.getModiRole(event.getGuild());
+                Objects.requireNonNull(event.getGuild()).addRoleToMember(Objects.requireNonNull(event.getMember()), modirole).queue();
+                event.editButton(ModiMenuCommand.remove_administrator).queue();
+            } else if (split[1].equals("rem_mod")) {
+                Role modirole = this.getModiRole(event.getGuild());
+                Objects.requireNonNull(event.getGuild()).removeRoleFromMember(Objects.requireNonNull(event.getMember()), modirole).queue();
+                event.editButton(ModiMenuCommand.add_administrator).queue();
+            }
+        }catch (Exception ignored) {}
     }
     
     private Role getModiRole(Guild guild) {

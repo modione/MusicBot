@@ -7,13 +7,15 @@ import commands.logic.CommandManager;
 import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.sql.Time;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static net.dv8tion.jda.api.requests.GatewayIntent.GUILD_MESSAGES;
 import static net.dv8tion.jda.api.requests.GatewayIntent.GUILD_VOICE_STATES;
@@ -38,6 +40,15 @@ public class main extends ListenerAdapter {
         this.playerManager = new DefaultAudioPlayerManager();
         AudioSourceManagers.registerRemoteSources(playerManager);
         AudioSourceManagers.registerLocalSource(playerManager);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                for (Guild guild : jda.getGuilds()) {
+                    guild.getChannels();
+                    guild.getMembers();
+                }
+            }
+        }, 0, TimeUnit.MILLISECONDS.convert(20, TimeUnit.SECONDS));
     }
     @Override
     public void onButtonClick(@NotNull ButtonClickEvent event) {
