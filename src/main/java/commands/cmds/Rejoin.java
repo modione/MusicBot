@@ -51,7 +51,6 @@ public class Rejoin implements ICommand {
             if (!Objects.requireNonNull(member.getVoiceState()).inVoiceChannel()) return;
             VoiceChannel channel = member.getVoiceState().getChannel();
             guild.kickVoiceMember(member).queue();
-            guild.getAudioManager().openAudioConnection(channel);
         }catch (Exception ignored) {}
     }
 }
