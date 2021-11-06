@@ -38,7 +38,7 @@ public class main extends ListenerAdapter {
 
     public static void main(String[] args) throws Exception {
         main main = new main();
-        INSTANCE.jda = JDABuilder.create(FileUtils.readFileToString(new File("info.txt"), "UTF-8"), GUILD_MESSAGES, GUILD_VOICE_STATES)
+        INSTANCE.jda = JDABuilder.create(System.getenv("TOKEN"), GUILD_MESSAGES, GUILD_VOICE_STATES)
                 .build();
         INSTANCE.jda.awaitReady();
         INSTANCE.jda.addEventListener(main, new CommandManager());
