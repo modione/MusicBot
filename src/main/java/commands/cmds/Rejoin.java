@@ -21,7 +21,7 @@ public class Rejoin implements ICommand {
     public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
         InteractionHook hook = event.getHook();
-        if (Objects.requireNonNull(Objects.requireNonNull(event.getGuild().getMemberById(main.INSTANCE.jda.getSelfUser().getId())).getVoiceState()).inVoiceChannel()) {
+        if (Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(event.getGuild()).getMemberById(main.INSTANCE.jda.getSelfUser().getId())).getVoiceState()).inVoiceChannel()) {
             rejoin(event.getGuild());
             hook.sendMessage("Erfolgreich rejoined!").queue();
         }else {
@@ -31,17 +31,17 @@ public class Rejoin implements ICommand {
 
     @Override
     public CommandData data() {
-        return null;
+        return new CommandData("rejoin", "Lässt den Bot rejoinen lul w");
     }
 
     @Override
     public Collection<OptionData> options() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Collection<CommandPrivilege> privileges() {
-        return null;
+        return new ArrayList<>();
     }
     public static void rejoin(Guild guild) {
         try {
