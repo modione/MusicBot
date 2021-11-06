@@ -15,9 +15,9 @@ import java.util.List;
 public class YoutubeAPI {
     // You need to set this value for your code to compile.
     // For example: ... DEVELOPER_KEY = "YOUR ACTUAL KEY";
-    private static final String DEVELOPER_KEY = "AIzaSyAcb2x88CfAbEFxXpl8yIqcyuY0sfX16K0";
+    private static final String DEVELOPER_KEY = "AIzaSyC736TI6DLYLEyJWcw1KkFVAGkphkOAwXg";
 
-    private static final String APPLICATION_NAME = "my first project";
+    private static final String APPLICATION_NAME = "My Project 79448";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     /**
