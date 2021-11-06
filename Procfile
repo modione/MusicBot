@@ -1,1 +1,1 @@
-Worker: java src/main/java/logic/main.java 
+heroku run java -jar target/MusicBot-1.1.jar
