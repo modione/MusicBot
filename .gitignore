@@ -7,7 +7,6 @@
 /target/maven-status/
 !/target/MusicBot-1.1.jar
 /target/original-MusicBot-1.1.jar
-/.gitignore
 /dependency-reduced-pom.xml
 /info.txt
 /pom.xml
