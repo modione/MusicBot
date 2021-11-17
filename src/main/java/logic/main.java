@@ -30,6 +30,16 @@ public class main extends ListenerAdapter {
                 .build();
         INSTANCE.jda.awaitReady();
         INSTANCE.jda.addEventListener(main, new CommandManager());
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                for (Guild guild : INSTANCE.jda.getGuilds()) {
+                    guild.getChannels();
+                    guild.getMembers();
+                }
+            }
+        }, 0, TimeUnit.MILLISECONDS.convert(20, TimeUnit.SECONDS));
+        new Logger();
     }
     public final AudioPlayerManager playerManager;
     public final Map<Long, GuildMusicPlayer> musicManagers;
@@ -40,20 +50,11 @@ public class main extends ListenerAdapter {
         this.playerManager = new DefaultAudioPlayerManager();
         AudioSourceManagers.registerRemoteSources(playerManager);
         AudioSourceManagers.registerLocalSource(playerManager);
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                for (Guild guild : jda.getGuilds()) {
-                    guild.getChannels();
-                    guild.getMembers();
-                }
-            }
-        }, 0, TimeUnit.MILLISECONDS.convert(20, TimeUnit.SECONDS));
     }
     @Override
     public void onButtonClick(@NotNull ButtonClickEvent event) {
-        String[] split = Objects.requireNonNull(event.getButton().getId()).split("@");
         event.deferReply().queue();
+        String[] split = Objects.requireNonNull(event.getButton().getId()).split("@");
         if (split[0].equals("play")) {
             AudioUtils.loadAndPlay(event.getHook(), "youtube.com/watch?v="+split[1], event.getMember());
         }

@@ -35,7 +35,9 @@ public class AudioUtils {
         main.INSTANCE.playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                hook.sendMessage("**" + track.getInfo().title+"** wurde zu der Playlist hinzugefügt").queue();
+                String content = "**" + track.getInfo().title + "** wurde zu der Playlist hinzugefügt";
+                Logger.send(member.getGuild().getName()+" | "+content);
+                hook.sendMessage(content).queue();
                 play(hook.getInteraction().getGuild(), musicManager, track, member);
             }
 
@@ -52,7 +54,9 @@ public class AudioUtils {
 
             @Override
             public void noMatches() {
-                hook.sendMessage(trackUrl+" wurde nicht gefunden").queue();
+                String content = trackUrl + " wurde nicht gefunden";
+                Logger.send(member.getGuild().getName()+" | "+content);
+                hook.sendMessage(content).queue();
             }
 
             @Override
@@ -77,7 +81,9 @@ public class AudioUtils {
             return;
         }
         AudioTrack playingTrack1 = musicManager.player.getPlayingTrack();
-        channel.sendMessage("Überspringe **"+playingTrack.getInfo().title+"**------->**"+playingTrack1.getInfo().title+"**").queue();
+        String content = "Überspringe **" + playingTrack.getInfo().title + "**------->**" + playingTrack1.getInfo().title + "**";
+        Logger.send(channel.getInteraction().getGuild().getName()+" | "+content);
+        channel.sendMessage(content).queue();
     }
     public static void pauseTrack(InteractionHook hook) {
         GuildMusicPlayer player = getGuildAudioPlayer(Objects.requireNonNull(hook.getInteraction().getGuild()));
@@ -89,11 +95,10 @@ public class AudioUtils {
             for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
                 if (voiceChannel.getMembers().contains(member)) {
                     audioManager.openAudioConnection(voiceChannel);
-                    break;
+                    return;
                 }
-                audioManager.openAudioConnection(voiceChannel);
-                break;
             }
+            audioManager.openAudioConnection(audioManager.getGuild().getVoiceChannels().get(0));
         }
 
     }
