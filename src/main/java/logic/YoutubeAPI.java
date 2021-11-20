@@ -63,7 +63,7 @@ public class YoutubeAPI {
     public static List<SearchResult> getVideosAsItem(String name) throws GeneralSecurityException, IOException {
         YouTube youTube = getService();
         YouTube.Search.List request = youTube.search().list("snippet");
-        SearchListResponse response = request.setKey(DEVELOPER_KEY).setMaxResults(25L).setQ(name).setType("video").execute();
+        SearchListResponse response = request.setKey(DEVELOPER_KEY).setMaxResults(10L).setQ(name).setType("video").execute();
         return response.getItems();
     }
 }
