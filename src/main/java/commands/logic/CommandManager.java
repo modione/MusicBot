@@ -27,12 +27,14 @@ public class CommandManager extends ListenerAdapter {
         SkipSong skip = new SkipSong();
         PauseSong song = new PauseSong();
         Rejoin rejoin = new Rejoin();
+        LoopCommand loop = new LoopCommand();
         commands.add(play);
         commands.add(skip);
         commands.add(song);
         commands.add(modiMenu);
         commands.add(rejoin);
-        commandList.addCommands(play.data(), skip.data(), song.data(), modiMenu.data(), rejoin.data()).queue();
+        commands.add(loop);
+        commandList.addCommands(play.data(), skip.data(), song.data(), modiMenu.data(), rejoin.data(), loop.data()).queue();
         commandList.queue();
         for (Guild guild : main.INSTANCE.jda.getGuilds()) {
             Map<String, Collection<? extends CommandPrivilege>> pre = new HashMap<>();
