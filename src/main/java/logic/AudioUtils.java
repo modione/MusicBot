@@ -35,9 +35,7 @@ public class AudioUtils {
         main.INSTANCE.playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                String content = "**" + track.getInfo().title + "** wurde zu der Playlist hinzugefügt";
-                Logger.send(member.getGuild().getName()+" | "+content);
-                hook.sendMessage(content).queue();
+                hook.sendMessage("**" + track.getInfo().title + "** wurde zu der Playlist hinzugefügt").queue();
                 play(hook.getInteraction().getGuild(), musicManager, track, member);
             }
 
@@ -54,9 +52,7 @@ public class AudioUtils {
 
             @Override
             public void noMatches() {
-                String content = trackUrl + " wurde nicht gefunden";
-                Logger.send(member.getGuild().getName()+" | "+content);
-                hook.sendMessage(content).queue();
+                hook.sendMessage(trackUrl + " wurde nicht gefunden").queue();
             }
 
             @Override
@@ -81,9 +77,7 @@ public class AudioUtils {
             return;
         }
         AudioTrack playingTrack1 = musicManager.player.getPlayingTrack();
-        String content = "Überspringe **" + playingTrack.getInfo().title + "**------->**" + playingTrack1.getInfo().title + "**";
-        Logger.send(channel.getInteraction().getGuild().getName()+" | "+content);
-        channel.sendMessage(content).queue();
+        channel.sendMessage("Überspringe **" + playingTrack.getInfo().title + "**------->**" + playingTrack1.getInfo().title + "**").queue();
     }
     public static void pauseTrack(InteractionHook hook) {
         GuildMusicPlayer player = getGuildAudioPlayer(Objects.requireNonNull(hook.getInteraction().getGuild()));

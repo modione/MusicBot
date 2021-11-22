@@ -8,12 +8,10 @@ import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.Time;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +27,7 @@ public class main extends ListenerAdapter {
         INSTANCE.jda = JDABuilder.create(System.getenv("TOKEN"), GUILD_MESSAGES, GUILD_VOICE_STATES)
                 .build();
         INSTANCE.jda.awaitReady();
-        INSTANCE.jda.addEventListener(main, new CommandManager());
+        INSTANCE.jda.addEventListener(main, new CommandManager(), new Logger());
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -39,8 +37,8 @@ public class main extends ListenerAdapter {
                 }
             }
         }, 0, TimeUnit.MILLISECONDS.convert(20, TimeUnit.SECONDS));
-        new Logger();
     }
+
     public final AudioPlayerManager playerManager;
     public final Map<Long, GuildMusicPlayer> musicManagers;
 
@@ -51,12 +49,13 @@ public class main extends ListenerAdapter {
         AudioSourceManagers.registerRemoteSources(playerManager);
         AudioSourceManagers.registerLocalSource(playerManager);
     }
+
     @Override
     public void onButtonClick(@NotNull ButtonClickEvent event) {
         event.deferReply().queue();
         String[] split = Objects.requireNonNull(event.getButton().getId()).split("@");
         if (split[0].equals("play")) {
-            AudioUtils.loadAndPlay(event.getHook(), "youtube.com/watch?v="+split[1], event.getMember());
+            AudioUtils.loadAndPlay(event.getHook(), "youtube.com/watch?v=" + split[1], event.getMember());
         }
     }
 
