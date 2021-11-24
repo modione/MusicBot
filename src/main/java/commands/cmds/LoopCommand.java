@@ -1,8 +1,6 @@
 package commands.cmds;
 
 import commands.logic.ICommand;
-import logic.main;
-import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -11,7 +9,6 @@ import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 public class LoopCommand implements ICommand {
     public static boolean isLooped = false;

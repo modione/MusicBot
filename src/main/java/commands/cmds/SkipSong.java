@@ -3,6 +3,7 @@ package commands.cmds;
 import commands.logic.ICommand;
 import logic.AudioUtils;
 import music.GuildMusicPlayer;
+import music.TrackScheduler;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -23,6 +24,8 @@ public class SkipSong implements ICommand {
         if (musicPlayer.player.getPlayingTrack() == null) {
             hook.sendMessage("Es wird gerade kein Song gespielt").queue();
             return;
+        }else if (musicPlayer.scheduler.queue.size()==1) {
+            hook.sendMessage("Es gibt keinen Song nach diesem!").queue();
         }
         AudioUtils.skipTrack(hook);
     }

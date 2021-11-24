@@ -2,7 +2,6 @@ package logic;
 
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.WebhookClientBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +18,8 @@ public class Logger extends ListenerAdapter {
         webhook = build();
     }
 
-    public static void send(Message msg) {
-        INSTANCE.webhook.send(msg.getContentDisplay());
+    public static void send(String msg) {
+        INSTANCE.webhook.send(msg);
     }
 
     public @NotNull WebhookClient build() {
@@ -36,7 +35,7 @@ public class Logger extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        if (Objects.requireNonNull(event.getMember()).getIdLong()!=(main.INSTANCE.jda.getSelfUser().getIdLong())) return;
-        send(event.getMessage());
+        if (Objects.requireNonNull(event.getMember()).getIdLong()!=(main.INSTANCE.jda.getSelfUser().getIdLong()) || event.getMessage().getContentDisplay().equals("")) return;
+        send(event.getMessage().getContentDisplay());
     }
 }

@@ -6,6 +6,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import commands.cmds.LoopCommand;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,7 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
-    private final BlockingQueue<AudioTrack> queue;
+    public final BlockingQueue<AudioTrack> queue;
 
     /**
      * @param player The audio player this scheduler uses
@@ -50,8 +52,13 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-        if (LoopCommand.isLooped&&endReason.mayStartNext) {
-            player.startTrack(track, false);
+        if (LoopCommand.isLooped) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    player.startTrack(track, false);
+                }
+            }, 100);
             return;
         }
         if (endReason.mayStartNext) {
