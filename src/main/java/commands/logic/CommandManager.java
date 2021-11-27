@@ -1,6 +1,7 @@
 package commands.logic;
 
 import commands.cmds.*;
+import logic.Logger;
 import logic.main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -57,7 +58,12 @@ public class CommandManager extends ListenerAdapter {
             if (!event.getName().equals(command.data().getName())) continue;
             ArrayList<OptionMapping> options = new ArrayList<>();
             if (!command.options().isEmpty()) for (OptionData data : command.options()) options.add(event.getOption(data.getName()));
-            new Thread(() -> command.on_command(event, options)).start();
+            Thread thread = new Thread(() -> command.on_command(event, options));
+            thread.start();
+            new Thread(() -> {
+                while (thread.isAlive()) {}
+                Logger.send(event.getHook().retrieveOriginal().complete().getContentDisplay());
+            });
         }
     }
 }

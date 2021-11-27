@@ -46,7 +46,6 @@ public class AudioUtils {
                 if (firstTrack == null) {
                     firstTrack = playlist.getTracks().get(0);
                 }
-
                 hook.sendMessage("---").queue();
             }
 
@@ -57,7 +56,7 @@ public class AudioUtils {
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                hook.sendMessage("Konnt den Song nicht spielen: "+exception).queue();
+                hook.sendMessage("Konnt den Song nicht spielen: "+exception.getMessage()).queue();
             }
         });
     }
