@@ -44,7 +44,6 @@ public class AudioUtils {
                 AudioTrack firstTrack = playlist.getSelectedTrack();
 
                 if (firstTrack == null) {
-                    firstTrack = playlist.getTracks().get(0);
                 }
                 hook.sendMessage("---").queue();
             }
@@ -69,7 +68,8 @@ public class AudioUtils {
     public static void skipTrack(InteractionHook channel) {
         GuildMusicPlayer musicManager = getGuildAudioPlayer(Objects.requireNonNull(channel.getInteraction().getGuild()));
         AudioTrack playingTrack = musicManager.player.getPlayingTrack();
-        if (musicManager.scheduler.queue.size()<=0) {
+        int size = musicManager.scheduler.queue.size();
+        if (size==0) {
             channel.sendMessage("Es gibt keinen Song nach diesem!").queue();
             return;
         }

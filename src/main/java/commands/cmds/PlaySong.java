@@ -36,16 +36,18 @@ public class PlaySong implements ICommand {
             ArrayList<Button> buttons = new ArrayList<>();
             try {
                 int responseCode = ((HttpURLConnection) (new URL(link)).openConnection()).getResponseCode();
-                if (responseCode==200) {
+                if (responseCode == 200) {
                     AudioUtils.loadAndPlay(hook, link, event.getMember());
                     return;
                 }
-            }catch (IOException ignored) {}
-            if (items.size()>1) {
+            } catch (IOException ignored) {
+            }
+            if (items.size() > 1) {
                 for (SearchResult s : items) {
                     if (s.getSnippet().getTitle().length() >= 80)
                         buttons.add(Button.success("play@" + s.getId().getVideoId(), s.getSnippet().getTitle().replace("&#39", "'").substring(0, 80)));
-                    else buttons.add(Button.success("play@" + s.getId().getVideoId(), s.getSnippet().getTitle().replace("&#39", "'")));
+                    else
+                        buttons.add(Button.success("play@" + s.getId().getVideoId(), s.getSnippet().getTitle().replace("&#39", "'")));
                 }
                 double size = buttons.size();
                 double count = Math.ceil((size / 5.0));
@@ -56,7 +58,7 @@ public class PlaySong implements ICommand {
                 embedBuilder.setDescription("Wähle den Song aus den du meinst.");
             }
         } catch (Exception e) {
-            embedBuilder.setDescription("**Fehler**\n"+e.getMessage());
+            embedBuilder.setDescription("**Fehler**\n" + e.getMessage());
         }
         hook.sendMessageEmbeds(embedBuilder.build()).addActionRows(rows).queue();
     }

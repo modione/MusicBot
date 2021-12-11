@@ -54,7 +54,7 @@ public class TrackScheduler extends AudioEventAdapter {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
         if (LoopCommand.isLooped) {
             this.queue.clear();
-            this.queue.add(track);
+            this.queue.add(track.makeClone());
         }
         if (endReason.mayStartNext) {
             nextTrack();
