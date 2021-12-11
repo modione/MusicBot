@@ -53,13 +53,8 @@ public class TrackScheduler extends AudioEventAdapter {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
         if (LoopCommand.isLooped) {
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    player.startTrack(track, false);
-                }
-            }, 100);
-            return;
+            this.queue.clear();
+            this.queue.add(track);
         }
         if (endReason.mayStartNext) {
             nextTrack();

@@ -12,9 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 public class Rejoin implements ICommand {
     @Override
@@ -45,13 +43,14 @@ public class Rejoin implements ICommand {
     }
     public static void rejoin(Guild guild) {
         try {
-
-            Member member = guild.getMemberById(main.INSTANCE.jda.getSelfUser().getId());
-            assert member != null;
-            if (!Objects.requireNonNull(member.getVoiceState()).inVoiceChannel()) return;
-            VoiceChannel channel = member.getVoiceState().getChannel();
-            guild.kickVoiceMember(member).queue();
-            guild.getAudioManager().openAudioConnection(channel);
+            VoiceChannel channel = guild.getAudioManager().getConnectedChannel();
+            guild.getAudioManager().closeAudioConnection();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    guild.getAudioManager().openAudioConnection(channel);
+                }
+            }, 3000);
         }catch (Exception ignored) {}
     }
 }

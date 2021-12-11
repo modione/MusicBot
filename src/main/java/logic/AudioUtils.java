@@ -69,12 +69,11 @@ public class AudioUtils {
     public static void skipTrack(InteractionHook channel) {
         GuildMusicPlayer musicManager = getGuildAudioPlayer(Objects.requireNonNull(channel.getInteraction().getGuild()));
         AudioTrack playingTrack = musicManager.player.getPlayingTrack();
-        try {
-            musicManager.scheduler.nextTrack();
-        }catch (NullPointerException e) {
-            channel.sendMessage("Es gibt keinen Song nach dem Aktuellen!").queue();
+        if (musicManager.scheduler.queue.size()-1==0) {
+            channel.sendMessage("Es gibt keinen Song nach diesem!").queue();
             return;
         }
+        musicManager.scheduler.nextTrack();
         AudioTrack playingTrack1 = musicManager.player.getPlayingTrack();
         channel.sendMessage("Überspringe **" + playingTrack.getInfo().title + "**------->**" + playingTrack1.getInfo().title + "**").queue();
     }
