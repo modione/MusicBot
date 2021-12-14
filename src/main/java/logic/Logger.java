@@ -2,11 +2,9 @@ package logic;
 
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.WebhookClientBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class Logger extends ListenerAdapter {
     private static Logger INSTANCE;
@@ -34,8 +32,8 @@ public class Logger extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
-        if (Objects.requireNonNull(event.getMember()).getIdLong()!=(main.INSTANCE.jda.getSelfUser().getIdLong()) || event.getMessage().getContentDisplay().equals("")) return;
-        send(event.getMessage().getContentDisplay());
+    public void onSlashCommand(@NotNull SlashCommandEvent event) {
+        send("Auf dem Server: **"+event.getGuild().getName()+"** wurde der Befehl: **"+event.getCommandString()+"**" +
+                " von: **"+event.getMember().getEffectiveName()+"** ausgeführt.");
     }
 }
