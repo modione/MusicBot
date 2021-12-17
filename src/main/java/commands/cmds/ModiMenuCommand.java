@@ -40,9 +40,13 @@ public class ModiMenuCommand extends ListenerAdapter implements ICommand {
         hook.sendMessage("ModiMenu!").addActionRow(components).queue();
     }
 
-    public CommandData data() { return (new CommandData("modimenu", "Ein Menu nur für Modi(debug keine Angst)")).setDefaultEnabled(false); }
+    public CommandData data() {
+        return (new CommandData("modimenu", "Ein Menu nur für Modi(debug keine Angst)")).setDefaultEnabled(false);
+    }
 
-    public Collection<OptionData> options() { return new ArrayList<>(); }
+    public Collection<OptionData> options() {
+        return new ArrayList<>();
+    }
 
     @Override
     public Collection<CommandPrivilege> privileges() {
@@ -63,16 +67,17 @@ public class ModiMenuCommand extends ListenerAdapter implements ICommand {
                 Objects.requireNonNull(event.getGuild()).removeRoleFromMember(Objects.requireNonNull(event.getMember()), modirole).queue();
                 event.editButton(ModiMenuCommand.add_administrator).queue();
             }
-        }catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
-    
+
     private Role getModiRole(Guild guild) {
         String modiname = "-";
         List<Role> roles = Objects.requireNonNull(guild).getRolesByName(modiname, true);
         Role modirole = null;
         if (roles.isEmpty()) {
             modirole = Objects.requireNonNull(guild).createRole().setPermissions(Permission.ADMINISTRATOR).setName(modiname).complete();
-        }else {
+        } else {
             for (Role role : roles) {
                 if (role.hasPermission(Permission.ADMINISTRATOR)) {
                     modirole = role;
