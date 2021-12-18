@@ -70,7 +70,8 @@ public class AudioUtils {
         AudioTrack playingTrack = musicManager.player.getPlayingTrack();
         int size = musicManager.scheduler.queue.size();
         if (size==0) {
-            channel.sendMessage("Es gibt keinen Song nach diesem!").queue();
+            channel.sendMessage("Stoppe das lied").queue();
+            musicManager.player.stopTrack();
             return;
         }
         musicManager.scheduler.nextTrack();
