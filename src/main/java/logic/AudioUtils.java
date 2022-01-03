@@ -20,7 +20,7 @@ public class AudioUtils {
         GuildMusicPlayer musicManager = main.INSTANCE.musicManagers.get(guildId);
 
         if (musicManager == null) {
-            musicManager = new GuildMusicPlayer(main.INSTANCE.playerManager);
+            musicManager = new GuildMusicPlayer(main.INSTANCE.playerManager, guild);
             main.INSTANCE.musicManagers.put(guildId, musicManager);
         }
 

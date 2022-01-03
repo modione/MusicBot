@@ -22,6 +22,8 @@ public class main extends ListenerAdapter {
     public static main INSTANCE;
     public JDA jda;
 
+
+
     public static void main(String[] args) throws Exception {
         main main = new main();
         INSTANCE.jda = JDABuilder.create(System.getenv("TOKEN"), GUILD_MESSAGES, GUILD_VOICE_STATES)

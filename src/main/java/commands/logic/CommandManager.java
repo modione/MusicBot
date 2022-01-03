@@ -22,8 +22,7 @@ public class CommandManager extends ListenerAdapter {
 
     public CommandManager() {
         INSTANCE = this;
-        ModiMenuCommand modiMenu = new ModiMenuCommand();
-        addCmd(new PlaySong(), new SkipSong(), new PauseSong(), new LoopCommand(), new Rejoin(), modiMenu);
+        addCmd(new PlaySong(), new SkipSong(), new PauseSong(), new LoopCommand(), new Rejoin());
         commandList.queue();
         for (Guild guild : main.INSTANCE.jda.getGuilds()) {
             Map<String, Collection<? extends CommandPrivilege>> pre = new HashMap<>();
@@ -37,7 +36,6 @@ public class CommandManager extends ListenerAdapter {
             });
             guild.updateCommandPrivileges(pre).complete();
         }
-        main.INSTANCE.jda.addEventListener(modiMenu);
     }
 
     @Override

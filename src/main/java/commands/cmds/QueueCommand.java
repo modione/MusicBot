@@ -3,7 +3,6 @@ package commands.cmds;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import commands.logic.ICommand;
 import logic.AudioUtils;
-import logic.main;
 import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;

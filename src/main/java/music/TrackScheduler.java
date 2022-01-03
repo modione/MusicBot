@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import commands.cmds.LoopCommand;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,13 +18,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     public final BlockingQueue<AudioTrack> queue;
-
+    private final Guild guild;
     /**
      * @param player The audio player this scheduler uses
      */
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(AudioPlayer player, Guild guild) {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
+        this.guild = guild;
     }
 
     /**
@@ -52,7 +54,7 @@ public class TrackScheduler extends AudioEventAdapter {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-        if (LoopCommand.isLooped) {
+        if (LoopCommand.guildAloop.getOrDefault(guild.getIdLong(), false)) {
             this.queue.clear();
             this.queue.add(track.makeClone());
         }
