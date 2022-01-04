@@ -18,7 +18,7 @@ public class LoopCommand implements ICommand {
     @Override
     public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
-        boolean isLooped = guildAloop.get(Objects.requireNonNull(event.getGuild()).getIdLong());
+        boolean isLooped = guildAloop.getOrDefault(Objects.requireNonNull(event.getGuild()).getIdLong(), false);
         isLooped=!isLooped;
         String eOd = "";
         if (isLooped) eOd="aktiviert";
