@@ -20,6 +20,7 @@ public class LoopCommand implements ICommand {
         event.deferReply().queue();
         boolean isLooped = guildAloop.getOrDefault(Objects.requireNonNull(event.getGuild()).getIdLong(), false);
         isLooped=!isLooped;
+        guildAloop.put(event.getGuild().getIdLong(), isLooped);
         String eOd = "";
         if (isLooped) eOd="aktiviert";
         else eOd="deaktiviert";
