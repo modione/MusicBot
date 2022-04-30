@@ -8,8 +8,9 @@ import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -53,12 +54,11 @@ public class main extends ListenerAdapter {
     }
 
     @Override
-    public void onButtonClick(@NotNull ButtonClickEvent event) {
+    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         event.deferReply().queue();
         String[] split = Objects.requireNonNull(event.getButton().getId()).split("@");
         if (split[0].equals("play")) {
             AudioUtils.loadAndPlay(event.getHook(), "youtube.com/watch?v=" + split[1], event.getMember());
         }
     }
-
 }

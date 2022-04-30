@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class PauseSong implements ICommand {
-    @Override
+
     public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
         InteractionHook hook = event.getHook();

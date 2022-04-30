@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class PlaySong implements ICommand {
     @Override
-    public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
+    public void on_command(SlashCommandInteraction event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
         InteractionHook hook = event.getHook();
         String link = data.get(0).getAsString();

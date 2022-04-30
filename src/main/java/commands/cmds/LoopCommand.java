@@ -1,11 +1,12 @@
 package commands.cmds;
 
 import commands.logic.ICommand;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.SlashCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
+import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +17,7 @@ public class LoopCommand implements ICommand {
     public static HashMap<Long, Boolean> guildAloop = new HashMap<>();
 
     @Override
-    public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
+    public void on_command(SlashCommandInteraction event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
         boolean isLooped = guildAloop.getOrDefault(Objects.requireNonNull(event.getGuild()).getIdLong(), false);
         isLooped=!isLooped;
@@ -29,7 +30,7 @@ public class LoopCommand implements ICommand {
 
     @Override
     public CommandData data() {
-        return new CommandData("loop", "Setzt den Song der gerade gespielt wird in Schleife");
+        return new CommandDataImpl("loop", "loop halt");
     }
 
     @Override
