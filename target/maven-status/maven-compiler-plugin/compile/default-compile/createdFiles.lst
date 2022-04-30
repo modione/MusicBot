@@ -1,5 +1,4 @@
 logic/main.class
-commands/cmds/ModiMenuCommand.class
 commands/cmds/SkipSong.class
 commands/logic/ICommand.class
 logic/AudioUtils$1.class
