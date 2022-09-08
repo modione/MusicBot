@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -24,24 +25,33 @@ public class QueueCommand implements ICommand {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle("Queue");
         GuildMusicPlayer player = AudioUtils.getGuildAudioPlayer(Objects.requireNonNull(event.getGuild()));
-        builder.appendDescription("╔Liste der Songs in der Playlist");
-        for (AudioTrack track : player.scheduler.queue) {
-            builder.appendDescription("╠"+track.getIdentifier());
+        AudioTrack playingTrack = player.player.getPlayingTrack();
+        if (playingTrack==null) {
+            builder.setDescription("Es wird kein Song gespielt!");
+            builder.setColor(Color.RED);
+            hook.sendMessageEmbeds(builder.build()).queue();
+            return;
         }
+        builder.addField("Spielt gerade", playingTrack.getInfo().title, false);
+        for (AudioTrack track : player.scheduler.queue) {
+            builder.addField("Track "+track.getPosition()+1, track.getInfo().title, false);
+        }
+        builder.addField("Schleife", String.valueOf(LoopCommand.isLooping(event.getGuild().getIdLong())), false);
+        hook.sendMessageEmbeds(builder.build()).queue();
     }
 
     @Override
     public CommandData data() {
-        return null;
+        return new CommandData("queue", "Zeigt dir die Warteschlange.");
     }
 
     @Override
     public Collection<OptionData> options() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Collection<CommandPrivilege> privileges() {
-        return null;
+        return new ArrayList<>();
     }
 }

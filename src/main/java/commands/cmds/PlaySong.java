@@ -14,6 +14,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.privileges.CommandPrivilege;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -40,27 +42,28 @@ public class PlaySong implements ICommand {
                     AudioUtils.loadAndPlay(hook, link, event.getMember());
                     return;
                 }
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
             if (items.size() > 1) {
-                for (SearchResult s : items) {
-                    if (s.getSnippet().getTitle().length() >= 80)
-                        buttons.add(Button.success("play@" + s.getId().getVideoId(), s.getSnippet().getTitle().replace("&#39", "'").substring(0, 80)));
-                    else
-                        buttons.add(Button.success("play@" + s.getId().getVideoId(), s.getSnippet().getTitle().replace("&#39", "'")));
+                ArrayList<SelectOption> options = new ArrayList<>();
+                for (SearchResult item : items) {
+                    if (item.getSnippet().getTitle().length() >= 100) {
+                        options.add(SelectOption.of(item.getSnippet().getTitle().substring(0, 100), item.getId().getVideoId()));
+                    }
+                    options.add(SelectOption.of(item.getSnippet().getTitle(), item.getId().getVideoId()));
                 }
-                double size = buttons.size();
-                double count = Math.ceil((size / 5.0));
-                for (int i = 0; i < count; i++) {
-                    if (i + 1 >= count) rows.add(ActionRow.of(buttons.subList(5 * i, buttons.size())));
-                    else rows.add(ActionRow.of(buttons.subList(5 * i, 5 * (i + 1))));
-                }
+                SelectionMenu menu = SelectionMenu.create("play:menu")
+                        .setPlaceholder("Wähle deinen Song aus")
+                        .addOptions(options)
+                        .setRequiredRange(1, 1)
+                        .build();
+
                 embedBuilder.setDescription("Wähle den Song aus den du meinst.");
+                hook.sendMessageEmbeds(embedBuilder.build()).addActionRow(menu).queue();
             }
         } catch (Exception e) {
-            embedBuilder.setDescription("**Fehler**\n" + e.getMessage());
+            embedBuilder.addField("Fehler", e.getMessage(), true);
+            hook.sendMessageEmbeds(embedBuilder.build()).queue();
         }
-        hook.sendMessageEmbeds(embedBuilder.build()).addActionRows(rows).queue();
     }
 
     @Override

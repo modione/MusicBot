@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,12 +54,11 @@ public class main extends ListenerAdapter {
     }
 
     @Override
-    public void onButtonClick(@NotNull ButtonClickEvent event) {
-        event.deferReply().queue();
-        String[] split = Objects.requireNonNull(event.getButton().getId()).split("@");
-        if (split[0].equals("play")) {
-            AudioUtils.loadAndPlay(event.getHook(), "youtube.com/watch?v=" + split[1], event.getMember());
+    public void onSelectionMenu(@NotNull SelectionMenuEvent event) {
+        if (Objects.equals(Objects.requireNonNull(event.getComponent()).getId(), "play:menu")) {
+            event.deferReply().queue();
+            AudioUtils.loadAndPlay(event.getHook(),
+                    "youtube.com/watch?v="+ Objects.requireNonNull(event.getInteraction().getSelectedOptions()).get(0).getValue(), event.getMember());
         }
     }
-
 }

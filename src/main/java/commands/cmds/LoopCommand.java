@@ -13,12 +13,15 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class LoopCommand implements ICommand {
-    public static HashMap<Long, Boolean> guildAloop = new HashMap<>();
+    private static HashMap<Long, Boolean> guildAloop = new HashMap<>();
+    public static boolean isLooping(long guildid) {
+        return guildAloop.getOrDefault(guildid, false);
+    }
 
     @Override
     public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
-        boolean isLooped = guildAloop.getOrDefault(Objects.requireNonNull(event.getGuild()).getIdLong(), false);
+        boolean isLooped = isLooping(Objects.requireNonNull(event.getGuild()).getIdLong());
         isLooped=!isLooped;
         guildAloop.put(event.getGuild().getIdLong(), isLooped);
         String eOd = "";
