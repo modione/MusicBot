@@ -36,7 +36,7 @@ public class QueueCommand implements ICommand {
         for (AudioTrack track : player.scheduler.queue) {
             builder.addField("Track "+track.getPosition()+1, track.getInfo().title, false);
         }
-        builder.addField("Schleife", String.valueOf(LoopCommand.isLooping(event.getGuild().getIdLong())), false);
+        builder.addField("Schleife", LoopCommand.isLooping(event.getGuild().getIdLong()) ? "An":"Aus", false);
         hook.sendMessageEmbeds(builder.build()).queue();
     }
 

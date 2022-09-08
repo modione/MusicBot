@@ -3,6 +3,7 @@ package logic;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import commands.cmds.LoopCommand;
 import commands.logic.CommandManager;
 import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.JDA;
@@ -57,8 +58,13 @@ public class main extends ListenerAdapter {
     public void onSelectionMenu(@NotNull SelectionMenuEvent event) {
         if (Objects.equals(Objects.requireNonNull(event.getComponent()).getId(), "play:menu")) {
             event.deferReply().queue();
+            if (LoopCommand.isLooping(Objects.requireNonNull(event.getGuild()).getIdLong())) {
+                event.getHook().sendMessage("Ne Kollege Queue is an").queue();
+            }else {
             AudioUtils.loadAndPlay(event.getHook(),
                     "youtube.com/watch?v="+ Objects.requireNonNull(event.getInteraction().getSelectedOptions()).get(0).getValue(), event.getMember());
+            }
+            event.getInteraction().editSelectionMenu(Objects.requireNonNull(event.getSelectionMenu()).asEnabled()).queue();
         }
     }
 }

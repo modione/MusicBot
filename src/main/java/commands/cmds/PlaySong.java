@@ -32,10 +32,8 @@ public class PlaySong implements ICommand {
         String link = data.get(0).getAsString();
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setTitle("**Spiele Song ab**");
-        ArrayList<ActionRow> rows = new ArrayList<>();
         try {
             List<SearchResult> items = YoutubeAPI.getVideosAsItem(link);
-            ArrayList<Button> buttons = new ArrayList<>();
             try {
                 int responseCode = ((HttpURLConnection) (new URL(link)).openConnection()).getResponseCode();
                 if (responseCode == 200) {
@@ -46,10 +44,12 @@ public class PlaySong implements ICommand {
             if (items.size() > 1) {
                 ArrayList<SelectOption> options = new ArrayList<>();
                 for (SearchResult item : items) {
-                    if (item.getSnippet().getTitle().length() >= 100) {
-                        options.add(SelectOption.of(item.getSnippet().getTitle().substring(0, 100), item.getId().getVideoId()));
+                    String title = item.getSnippet().getTitle().replace("&#39;", "'");
+                    String id = item.getId().getVideoId();
+                    if (title.length() >= 100) {
+                        options.add(SelectOption.of(title.substring(0, 100), id));
                     }
-                    options.add(SelectOption.of(item.getSnippet().getTitle(), item.getId().getVideoId()));
+                    options.add(SelectOption.of(title, id));
                 }
                 SelectionMenu menu = SelectionMenu.create("play:menu")
                         .setPlaceholder("Wähle deinen Song aus")

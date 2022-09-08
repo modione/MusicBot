@@ -1,6 +1,9 @@
 package commands.cmds;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import commands.logic.ICommand;
+import logic.AudioUtils;
+import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -13,7 +16,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class LoopCommand implements ICommand {
-    private static HashMap<Long, Boolean> guildAloop = new HashMap<>();
+    private static final HashMap<Long, Boolean> guildAloop = new HashMap<>();
     public static boolean isLooping(long guildid) {
         return guildAloop.getOrDefault(guildid, false);
     }
@@ -23,6 +26,10 @@ public class LoopCommand implements ICommand {
         event.deferReply().queue();
         boolean isLooped = isLooping(Objects.requireNonNull(event.getGuild()).getIdLong());
         isLooped=!isLooped;
+        if (isLooped) {
+            GuildMusicPlayer musicPlayer = AudioUtils.getGuildAudioPlayer(event.getGuild());
+            musicPlayer.scheduler.queue.clear();
+        }
         guildAloop.put(event.getGuild().getIdLong(), isLooped);
         String eOd = "";
         if (isLooped) eOd="aktiviert";
