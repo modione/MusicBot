@@ -16,7 +16,10 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.Button;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
+import org.apache.commons.lang3.StringEscapeUtils;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -44,7 +47,7 @@ public class PlaySong implements ICommand {
             if (items.size() > 1) {
                 ArrayList<SelectOption> options = new ArrayList<>();
                 for (SearchResult item : items) {
-                    String title = item.getSnippet().getTitle().replace("&#39;", "'");
+                    String title = StringEscapeUtils.unescapeXml(item.getSnippet().getTitle());
                     String id = item.getId().getVideoId();
                     if (title.length() >= 100) {
                         options.add(SelectOption.of(title.substring(0, 100), id));

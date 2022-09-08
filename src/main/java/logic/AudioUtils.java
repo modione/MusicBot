@@ -81,7 +81,7 @@ public class AudioUtils {
     public static void pauseTrack(InteractionHook hook) {
         GuildMusicPlayer player = getGuildAudioPlayer(Objects.requireNonNull(hook.getInteraction().getGuild()));
         player.player.setPaused(!player.player.isPaused());
-        hook.sendMessage("**"+player.player.getPlayingTrack().getInfo().title+"** paussiert!").queue();
+        hook.sendMessage("**"+player.player.getPlayingTrack().getInfo().title+"** "+(player.player.isPaused()?"pausiert":"fortgesetzt")).queue();
     }
     public static void connectToFirstVoiceChannel(AudioManager audioManager, Member member) {
         if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {

@@ -32,7 +32,7 @@ public class QueueCommand implements ICommand {
             hook.sendMessageEmbeds(builder.build()).queue();
             return;
         }
-        builder.addField("Spielt gerade", playingTrack.getInfo().title, false);
+        builder.addField("Spielt gerade", (player.player.isPaused()?":pause_button:":"")+playingTrack.getInfo().title, false);
         for (AudioTrack track : player.scheduler.queue) {
             builder.addField("Track "+track.getPosition()+1, track.getInfo().title, false);
         }
