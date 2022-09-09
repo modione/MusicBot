@@ -50,11 +50,10 @@ public class main extends ListenerAdapter {
         if (Objects.equals(Objects.requireNonNull(event.getComponent()).getId(), "play:menu")) {
             event.deferReply().queue();
             if (LoopCommand.isLooping(Objects.requireNonNull(event.getGuild()).getIdLong())) {
-                event.getHook().sendMessage("Ne Kollege loop is an").queue();
-            }else {
+                AudioUtils.skipTrack(event.getHook());
+            }
             AudioUtils.loadAndPlay(event.getHook(),
                     "youtube.com/watch?v="+ Objects.requireNonNull(event.getInteraction().getSelectedOptions()).get(0).getValue(), event.getMember());
-            }
             event.getInteraction().editSelectionMenu(Objects.requireNonNull(event.getSelectionMenu()).asEnabled()).queue();
         }
     }

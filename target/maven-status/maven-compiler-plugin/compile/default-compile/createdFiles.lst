@@ -1,5 +1,4 @@
 logic\AudioUtils.class
-logic\main$1.class
 commands\cmds\SkipSong.class
 logic\Logger.class
 commands\cmds\QueueCommand.class
@@ -8,6 +7,7 @@ logic\main.class
 logic\AudioUtils$1.class
 music\TrackScheduler.class
 commands\cmds\PauseSong.class
+logic\AudioUtils$2.class
 commands\cmds\PlaySong.class
 music\AudioPlayerSendHandler.class
 logic\YoutubeAPI.class
