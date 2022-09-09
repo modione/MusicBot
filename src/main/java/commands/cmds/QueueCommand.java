@@ -33,11 +33,20 @@ public class QueueCommand implements ICommand {
             return;
         }
         builder.addField("Spielt gerade", (player.player.isPaused()?":pause_button:":"")+playingTrack.getInfo().title, false);
+        int track_i = 1;
+        int i = 1;
         for (AudioTrack track : player.scheduler.queue) {
-            builder.addField("Track "+track.getPosition()+1, track.getInfo().title, false);
+            builder.addField("Track "+track_i, track.getInfo().title, false);
+            if (i>=24) {
+                hook.sendMessageEmbeds(builder.build()).queue();
+                builder = new EmbedBuilder();
+                i=1;
+            }else i++;
+            track_i++;
         }
         builder.addField("Schleife", LoopCommand.isLooping(event.getGuild().getIdLong()) ? "An":"Aus", false);
         hook.sendMessageEmbeds(builder.build()).queue();
+
     }
 
     @Override

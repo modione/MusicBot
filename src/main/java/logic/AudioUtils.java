@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import commands.cmds.LoopCommand;
 import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,8 +13,25 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class AudioUtils {
+    static {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                main.INSTANCE.musicManagers.forEach((aLong, guildMusicPlayer) -> {
+                    AudioManager audioManager = Objects.requireNonNull(main.INSTANCE.jda.getGuildById(aLong)).getAudioManager();
+                    if (guildMusicPlayer.player.getPlayingTrack()==null || Objects.requireNonNull(audioManager.getConnectedChannel()).getMembers().size()==1) {
+                        audioManager.closeAudioConnection();
+
+                    }
+                });
+            }
+        }, TimeUnit.MILLISECONDS.convert(60, TimeUnit.SECONDS), TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS));
+    }
 
     public static synchronized GuildMusicPlayer getGuildAudioPlayer(Guild guild) {
         long guildId = Long.parseLong(guild.getId());
@@ -41,11 +59,10 @@ public class AudioUtils {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                AudioTrack firstTrack = playlist.getSelectedTrack();
-
-                if (firstTrack == null) {
+                for (AudioTrack track : playlist.getTracks()) {
+                    play(hook.getInteraction().getGuild(), musicManager, track, member);
                 }
-                hook.sendMessage("---").queue();
+                hook.sendMessage("Playlist **"+playlist.getName()+"** hinzugefügt, erster Track ist **"+musicManager.player.getPlayingTrack().getInfo().title+"**").queue();
             }
 
             @Override
@@ -72,6 +89,10 @@ public class AudioUtils {
         if (size==0) {
             channel.sendMessage("Stoppe das lied").queue();
             musicManager.player.stopTrack();
+            long guildid = channel.getInteraction().getGuild().getIdLong();
+            if (LoopCommand.isLooping(guildid)) {
+                LoopCommand.switchLooping(guildid);
+            }
             return;
         }
         musicManager.scheduler.nextTrack();
@@ -93,6 +114,5 @@ public class AudioUtils {
             }
             audioManager.openAudioConnection(audioManager.getGuild().getVoiceChannels().get(0));
         }
-
     }
 }

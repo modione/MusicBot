@@ -32,15 +32,6 @@ public class main extends ListenerAdapter {
                 .build();
         INSTANCE.jda.awaitReady();
         INSTANCE.jda.addEventListener(main, new CommandManager(), new Logger());
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                for (Guild guild : INSTANCE.jda.getGuilds()) {
-                    guild.getChannels();
-                    guild.getMembers();
-                }
-            }
-        }, 0, TimeUnit.MILLISECONDS.convert(20, TimeUnit.SECONDS));
     }
 
     public final AudioPlayerManager playerManager;
@@ -59,7 +50,7 @@ public class main extends ListenerAdapter {
         if (Objects.equals(Objects.requireNonNull(event.getComponent()).getId(), "play:menu")) {
             event.deferReply().queue();
             if (LoopCommand.isLooping(Objects.requireNonNull(event.getGuild()).getIdLong())) {
-                event.getHook().sendMessage("Ne Kollege Queue is an").queue();
+                event.getHook().sendMessage("Ne Kollege loop is an").queue();
             }else {
             AudioUtils.loadAndPlay(event.getHook(),
                     "youtube.com/watch?v="+ Objects.requireNonNull(event.getInteraction().getSelectedOptions()).get(0).getValue(), event.getMember());

@@ -20,20 +20,22 @@ public class LoopCommand implements ICommand {
     public static boolean isLooping(long guildid) {
         return guildAloop.getOrDefault(guildid, false);
     }
+    public static boolean switchLooping(long guildid) {
+        boolean isLooped = isLooping(guildid);
+        isLooped=!isLooped;
+        guildAloop.put(guildid, isLooped);
+        return isLooped;
+    }
 
     @Override
     public void on_command(SlashCommandEvent event, ArrayList<OptionMapping> data) {
         event.deferReply().queue();
-        boolean isLooped = isLooping(Objects.requireNonNull(event.getGuild()).getIdLong());
-        isLooped=!isLooped;
+        boolean isLooped = switchLooping(Objects.requireNonNull(event.getGuild()).getIdLong());
+        String eOd;
         if (isLooped) {
-            GuildMusicPlayer musicPlayer = AudioUtils.getGuildAudioPlayer(event.getGuild());
-            musicPlayer.scheduler.queue.clear();
-        }
-        guildAloop.put(event.getGuild().getIdLong(), isLooped);
-        String eOd = "";
-        if (isLooped) eOd="aktiviert";
-        else eOd="deaktiviert";
+            AudioUtils.getGuildAudioPlayer(event.getGuild()).scheduler.queue.clear();
+            eOd="aktiviert";
+        }else eOd="deaktiviert";
         event.getHook().sendMessage("Die Schleife wurde "+eOd).queue();
     }
 
