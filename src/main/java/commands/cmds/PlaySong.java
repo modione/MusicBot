@@ -54,18 +54,17 @@ public class PlaySong implements ICommand {
                     }
                     options.add(SelectOption.of(title, id));
                 }
-                SelectionMenu menu = SelectionMenu.create("play:menu")
+
+                embedBuilder.setDescription("Wähle den Song aus den du meinst.");
+                hook.sendMessageEmbeds(embedBuilder.build()).addActionRow(SelectionMenu.create("play:menu")
                         .setPlaceholder("Wähle deinen Song aus")
                         .addOptions(options)
                         .setRequiredRange(1, 1)
-                        .build();
-
-                embedBuilder.setDescription("Wähle den Song aus den du meinst.");
-                hook.sendMessageEmbeds(embedBuilder.build()).addActionRow(menu).queue();
+                        .build()).queue();
             }
         } catch (Exception e) {
             embedBuilder.addField("Fehler", e.getMessage(), true);
-            hook.sendMessageEmbeds(embedBuilder.build()).queue();
+            hook.sendMessageEmbeds(embedBuilder.build()).setEphemeral(true).queue();
         }
     }
 
