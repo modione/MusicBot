@@ -9,8 +9,11 @@ import music.GuildMusicPlayer;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.managers.AudioManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Timer;
@@ -30,7 +33,7 @@ public class AudioUtils {
                     }
                 });
             }
-        }, TimeUnit.MILLISECONDS.convert(60, TimeUnit.SECONDS), TimeUnit.MILLISECONDS.convert(30, TimeUnit.SECONDS));
+        }, TimeUnit.MILLISECONDS.convert(60, TimeUnit.SECONDS), TimeUnit.MILLISECONDS.convert(60, TimeUnit.SECONDS));
     }
 
     public static synchronized GuildMusicPlayer getGuildAudioPlayer(Guild guild) {

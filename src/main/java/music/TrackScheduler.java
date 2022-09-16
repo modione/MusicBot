@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import commands.cmds.LoopCommand;
+import logic.main;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.Timer;
@@ -39,7 +40,17 @@ public class TrackScheduler extends AudioEventAdapter {
         // track goes to the queue instead.
         if (!player.startTrack(track, true)) {
             queue.offer(track);
+        }else {
+            setNick(track);
         }
+    }
+
+    public void setNick(AudioTrack track) {
+        String nickname = track.getInfo().title;
+        if (nickname.length()>=32) {
+            nickname = nickname.substring(0, 29)+"...";
+        }
+        guild.getSelfMember().modifyNickname(nickname).queue();
     }
 
     /**

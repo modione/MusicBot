@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,16 +55,22 @@ public class PlaySong implements ICommand {
                     }
                     options.add(SelectOption.of(title, id));
                 }
+                ArrayList<SelectOption> options1 = new ArrayList<>();
+                for (SelectOption option : options) {
+                    options1.removeIf(selectOption -> option.getValue().equals(selectOption.getValue()));
+                    options1.add(option);
+                }
 
                 embedBuilder.setDescription("Wähle den Song aus den du meinst.");
                 hook.sendMessageEmbeds(embedBuilder.build()).addActionRow(SelectionMenu.create("play:menu")
                         .setPlaceholder("Wähle deinen Song aus")
-                        .addOptions(options)
+                        .addOptions(options1)
                         .setRequiredRange(1, 1)
                         .build()).queue();
             }
         } catch (Exception e) {
-            embedBuilder.addField("Fehler", e.getMessage(), true);
+            e.printStackTrace();
+            embedBuilder.addField("Fehler",e.getClass().getName(), false);
             hook.sendMessageEmbeds(embedBuilder.build()).setEphemeral(true).queue();
         }
     }
